@@ -1,4 +1,4 @@
-def DIV_PP_P(P1: Polynomial, P2: Polynomial) -> Polynomial:
+def __truediv__(self, other):
     """
     делал: Чумаков Никита Ярославович
     Частное от деления многочлена P1 на P2 при делении с остатком.
@@ -8,12 +8,12 @@ def DIV_PP_P(P1: Polynomial, P2: Polynomial) -> Polynomial:
     и из делимого вычитаете этот многочлен и так продолжаете дальше пока степень делимого больше степени делителя или делимое не ноль
     """
     # Проверка делителя на нуль
-    if all(d.numerator.A == [0] for d in P2.C):
+    if all(d.numerator.A == [0] for d in other.C):
         raise ZeroDivisionError("Деление на нулевой многочлен невозможно")
 
     # Копии делимого и делителя
-    A = Polynomial(P1.m, P1.C[:])
-    B = Polynomial(P2.m, P2.C[:])
+    A = Polynomial(self.m, self.C[:])
+    B = Polynomial(other.m, other.C[:])
 
     # Частное Q = 0
     zero_rat = Rational(Integer(0, 0, [0]), Natural(0, [1]))
@@ -41,24 +41,24 @@ def DIV_PP_P(P1: Polynomial, P2: Polynomial) -> Polynomial:
         b_lead = B.C[0]
 
         # Делим коэффициенты (Rational)
-        factor = DIV_QQ_Q(a_lead, b_lead)
+        factor = a_lead / b_lead
 
         # Создаём одночлен factor * x^k
         term = Polynomial(0, [factor])
         term_shifted = MUL_Pxk_P(term, k)
 
         # Прибавляем одночлен к частному (будущий ответ)
-        Q = ADD_PP_P(Q, term_shifted)
+        Q = Q + term_shifted
 
         # Умножаем делитель на factor и x^k
-        B_shifted = MUL_Pxk_P(B, k)   # умножаем на x^k
+        B_shifted = MUL_Pxk_P(B, k)  # умножаем на x^k
         B_scaled = Polynomial(
             B_shifted.m,
-            [MUL_QQ_Q(c, factor) for c in B_shifted.C]   # умножаем все коэф. делителя на factor
+            [c * factor for c in B_shifted.C]  # умножаем все коэф. делителя на factor
         )
 
         # Вычитаем (A = A - B_scaled)
-        A = SUB_PP_P(A, B_scaled)
+        A = A - B_scaled
 
         # Удаляем ведущие нули, если появились
         while len(A.C) > 1 and A.C[0].numerator.A == [0]:
