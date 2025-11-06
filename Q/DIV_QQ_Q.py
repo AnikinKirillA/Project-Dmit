@@ -10,7 +10,7 @@ def __truediv__(self, other):
         raise ZeroDivisionError("Деление на ноль в рациональных числах")
 
     # По формуле: (a/b) ÷ (c/d) = (a*d) / (b*c) перемножаем
-    new_numerator = self.numerator * RANS_N_Z(other.denominator)
+    new_numerator = self.numerator * TRANS_N_Z(other.denominator)
     new_denominator = self.denominator * ABS_Z_N(other.numerator)
 
     # Формируем новое рациональное число
