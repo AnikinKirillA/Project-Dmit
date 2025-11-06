@@ -15,7 +15,7 @@ def GCF_NN_N(a: Natural, b: Natural) -> Natural:
             A, B = B, A
 
         # Теперь A >= B, можно брать остаток
-        R = MOD_NN_N(A, B)
+        R = A % B
         A, B = B, R
 
     return A
