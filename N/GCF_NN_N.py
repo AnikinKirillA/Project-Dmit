@@ -1,15 +1,15 @@
-def GCF_NN_N(a: Natural, b: Natural) -> Natural:
+def GCF_NN_N(self, other):
     """
     Сделал: Чумаков Никита Ярославович
     НОД (наибольший общий делитель) двух натуральных чисел.
     """
     # Создаём копии, чтобы не испортить исходные
-    A = Natural(a.len, a.A[:])
-    B = Natural(b.len, b.A[:])
+    A = Natural(self.len, self.A[:])
+    B = Natural(other.len, other.A[:])
 
-    while NZER_N_B(B):  # пока B != 0
+    while B.NZER_N_B():  # пока B != 0
         # Проверяем, какое больше
-        cmp = COM_NN_D(A, B)
+        cmp = A.COM_NN_D(B)
 
         if cmp == 1:  # A < B -> поменяем их местами
             A, B = B, A
