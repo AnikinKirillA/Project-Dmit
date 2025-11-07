@@ -6,7 +6,7 @@ def SUB_NDN_N(self, int, other):
     
     other_num = MUL_ND_N(other, int) # Домножение второго числа на цифру
 
-    if COM_NN_D(self, other_num) == 1: # При отрицательном результате возвращаем ноль
+    if COM_NN_D(self, other_num) == -1: # При отрицательном результате возвращаем ноль
         return Natural(0, [0]) # ???
     
     return __sub__(self, other_num)
