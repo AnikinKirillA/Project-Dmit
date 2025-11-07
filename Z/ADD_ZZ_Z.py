@@ -3,10 +3,6 @@ def __add__(self, other):
     Выполнил: Сурин Максим 
     Сложение целых чисел
     """
-    
-    """ Оба равны нулю - возвращаем ноль """
-    if self.SGN_Z_D() == 0 and other.SGN_Z_D() == 0:
-        return self
 
     """ Если первое число - ноль, возвращаем второе """
     if self.SGN_Z_D() == 0:
@@ -25,7 +21,7 @@ def __add__(self, other):
     if self.SGN_Z_D() != other.SGN_Z_D():
         n1 = Natural(self.len, self.A)
         n2 = Natural(other.len, other.A)
-        
+
         if n1.COM_NN_D(n2) != -1:
             sub_of_mods = n1 - n2
             return Integer(n1.s, sub_of_mods.len, sub_of_mods.A)
