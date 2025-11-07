@@ -1,11 +1,11 @@
-def DEG_P_N(P: Polynomial) -> Natural:
+def DEG_P_N(self):
     """
     Сделал: Чумаков Никита Ярославович
     DEG_P_N: Polynomial → Natural
     Возвращает степень многочлена как натуральное число.
     """
     # Получаем степень многочлена (int)
-    m = P.m
+    m = self.m
 
     # Преобразуем в массив цифр
     A = [int(d) for d in str(m)]

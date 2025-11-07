@@ -45,13 +45,13 @@ def __truediv__(self, other):
 
         # Создаём одночлен factor * x^k
         term = Polynomial(0, [factor])
-        term_shifted = MUL_Pxk_P(term, k)
+        term_shifted = term.MUL_Pxk_P(k)
 
         # Прибавляем одночлен к частному (будущий ответ)
         Q = Q + term_shifted
 
         # Умножаем делитель на factor и x^k
-        B_shifted = MUL_Pxk_P(B, k)  # умножаем на x^k
+        B_shifted = B.MUL_Pxk_P(k)  # умножаем на x^k
         B_scaled = Polynomial(
             B_shifted.m,
             [c * factor for c in B_shifted.C]  # умножаем все коэф. делителя на factor
