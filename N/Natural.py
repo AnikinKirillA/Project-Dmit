@@ -52,7 +52,7 @@ class Natural:
         Проверка на ноль натурального числа
         """
         # Число равно нулю, если оно состоит из одной цифры и эта цифра 0
-        return self.len == 0 and self.A[0] == 0
+        return !(self.len == 0 and self.A[0] == 0)
 
     def ADD_1N_N(self):
         """
