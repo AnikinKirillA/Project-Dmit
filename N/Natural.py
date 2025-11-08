@@ -349,7 +349,7 @@ class Natural:
             # Проверяем, какое больше
             cmp = A.COM_NN_D(B)
 
-            if cmp == 1:  # A < B -> поменяем их местами
+            if cmp == -1:  # A < B -> поменяем их местами
                 A, B = B, A
 
             # Теперь A >= B, можно брать остаток
@@ -367,4 +367,3 @@ class Natural:
         """
         gcd = self.GCF_NN_N(other)
         return self * other // gcd
-
