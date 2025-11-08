@@ -13,10 +13,10 @@ def __mul__(self, other):
     2) домножение на x^(степень текущего члена), если его коэффициент не ноль
     """
     for i in range(other.m + 1):
-        temp_poly =  self.MUL_PQ_Q(other.C[i])
+        temp_poly = self.MUL_PQ_Q(other.C[i])
         if other.C[i].numerator.A != [0]:
             temp_poly = temp_poly.MUL_Pxk_P(other.m - i)
 
-        product += temp_poly
+        product = product + temp_poly
 
     return product
