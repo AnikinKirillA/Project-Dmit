@@ -52,7 +52,7 @@ class Natural:
         Проверка на ноль натурального числа
         """
         # Число равно нулю, если оно состоит из одной цифры и эта цифра 0
-        return self.len == 0 and self.A[0] == 0
+        return not(self.len == 0 and self.A[0] == 0)
 
     def ADD_1N_N(self):
         """
@@ -161,7 +161,7 @@ class Natural:
         """
 
         # Если число 0 или k = 0, возвращаем исходное число
-        if self.NZER_N_B() or other.NZER_N_B():
+        if not(self.NZER_N_B()) or not(other.NZER_N_B()):
             return Natural(self.len, self.A[:])
 
         # Получаем значение k как целое число (количество нулей)
