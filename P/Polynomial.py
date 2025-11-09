@@ -1,6 +1,7 @@
 from N.Natural import Natural
 from Z.Integer import Integer
 from Q.Rational import Rational
+from TRANS.TRANS_N_Z import TRANS_N_Z
 
 
 class Polynomial:
@@ -301,7 +302,6 @@ class Polynomial:
                 k_nat = Natural(len(k_digits) - 1, k_digits)
 
             # Преобразуем в целое число
-            from TRANS_N_Z import TRANS_N_Z
             k_int = TRANS_N_Z(k_nat)
 
             # Умножаем коэффициент на степень
