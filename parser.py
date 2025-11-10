@@ -1,0 +1,149 @@
+import re
+from P.Polynomial import Polynomial
+from Q.Rational import Rational
+from TRANS.TRANS_INT_Q import TRANS_INT_Q
+from TRANS.TRANS_STR_P import TRANS_STR_P
+from TRANS.TRANS_Q_P import TRANS_Q_P
+
+
+def is_number(s):
+    try:
+        float(s)  # или int(s) для целых чисел
+        return True
+    except ValueError:
+        return False
+
+
+def to_rpn(expression: str):
+    expression = expression.replace('//', '/')
+    expression = expression.replace(' ', '')
+
+    # === ДОПОЛНИТЕЛЬНО: вставляем * между скобкой и x ===
+    # Например: (...)x → (...)*x
+    expression = re.sub(r'(?<=\))(?=x)', '*', expression)
+    # Также: число сразу перед x (например 3x) → 3*x
+    expression = re.sub(r'(?<=\d)(?=x)', '*', expression)
+
+    # Разбиваем на токены (включая знаки)
+    token_pattern = r'(x\^\d+|x|\d+\.\d+|\d+|[+\-*/^()])'
+    tokens = re.findall(token_pattern, expression)
+
+    # === Обработка унарных минусов ===
+    processed = []
+    for i, tok in enumerate(tokens):
+        if tok == '-':
+            # Унарный минус — если стоит в начале или после оператора или открывающей скобки
+            if i == 0 or tokens[i - 1] in {'+', '-', '*', '/', '^', '('}:
+                if i + 1 < len(tokens):
+                    nxt = tokens[i + 1]
+                    combined = '-' + nxt
+                    processed.append(combined)
+                    tokens[i + 1] = ''  # помечаем, что этот токен уже использован
+                continue
+        if tok != '':
+            processed.append(tok)
+
+    # === Алгоритм сортировочной станции ===
+    output = []
+    stack = []
+
+    precedence = {'^': 4, '*': 3, '/': 3, '+': 2, '-': 2}
+    right_assoc = {'^'}
+
+    for token in processed:
+        if re.fullmatch(r'-?\d+(\.\d+)?', token) or re.fullmatch(r'-?x(\^\d+)?', token):
+            output.append(token)
+        elif token in precedence:
+            while stack and stack[-1] in precedence:
+                top = stack[-1]
+                if (token not in right_assoc and precedence[token] <= precedence[top]) or \
+                        (token in right_assoc and precedence[token] < precedence[top]):
+                    output.append(stack.pop())
+                else:
+                    break
+            stack.append(token)
+        elif token == '(':
+            stack.append(token)
+        elif token == ')':
+            while stack and stack[-1] != '(':
+                output.append(stack.pop())
+            stack.pop()  # убрать '('
+
+    while stack:
+        output.append(stack.pop())
+
+    return output
+
+
+def eval_rpn(tokens):
+    stack = []
+
+    for t in tokens:
+        if t in ['+', '-', '*', '/']:
+            b = stack.pop()
+            a = stack.pop()
+            if t == '+':
+                if type(a) == int:
+                    a = TRANS_INT_Q(a)
+                if type(b) == int:
+                    b = TRANS_INT_Q(b)
+                if type(a) == type(b) and type(a) != str:
+                    stack.append(a + b)
+                else:
+                    if type(a) == Rational:
+                        a = TRANS_Q_P(a)
+                    if type(b) == Rational:
+                        b = TRANS_Q_P(b)
+                    stack.append(a + b)
+
+            elif t == '-':
+                if type(a) == int:
+                    a = TRANS_INT_Q(a)
+                if type(b) == int:
+                    b = TRANS_INT_Q(b)
+                if type(a) == type(b) and type(a) != str:
+                    stack.append(a - b)
+                else:
+                    if type(a) == Rational:
+                        a = TRANS_Q_P(a)
+                    if type(b) == Rational:
+                        b = TRANS_Q_P(b)
+                    stack.append(a - b)
+            elif t == '*':
+                if type(a) == int:
+                    a = TRANS_INT_Q(a)
+                if type(b) == int:
+                    b = TRANS_INT_Q(b)
+                if type(a) == type(b) and type(a) != str:
+                    stack.append(a * b)
+                else:
+                    if type(a) == Rational:
+                        a = TRANS_Q_P(a)
+                    if type(b) == Rational:
+                        b = TRANS_Q_P(b)
+                    stack.append(a * b)
+            elif t == '/':
+                if type(a) == int:
+                    a = TRANS_INT_Q(a)
+                if type(b) == int:
+                    b = TRANS_INT_Q(b)
+                if type(a) == type(b) and type(a) != str:
+                    if type(a) == Polynomial:
+                        stack.append(a // b)
+                    else:
+                        stack.append(a / b)
+
+                else:
+                    if type(a) == Rational:
+                        a = TRANS_Q_P(a)
+                    if type(b) == Rational:
+                        b = TRANS_Q_P(b)
+                    stack.append(a // b)
+            elif t == '^':
+                stack.append(a ** b)
+        else:
+            if is_number(t):
+                stack.append(TRANS_INT_Q(int(t)))
+            else:
+                stack.append(TRANS_STR_P(t))
+    return stack[-1]

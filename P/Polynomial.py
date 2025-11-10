@@ -325,3 +325,28 @@ class Polynomial:
         dp = self.DER_P_P()
         g = self.GCF_PP_P(dp)
         return self.__floordiv__(g)  # Используем __floordiv__ вместо //
+
+    def show(self):
+        p = self
+        s = ''
+
+        if p.C[0].numerator.A[0] == 0:
+            return '0'
+        for i in range(p.m + 1):
+            temp = list(map(str, p.C[i].numerator.A))
+            if p.C[i].numerator.s == 1:
+                s = s + ' - '
+            if int(temp[0]) != 0:
+                if i != 0 and p.C[i].numerator.s == 0:
+                    s = s + ' + '
+                temp = "".join(temp)
+                s = s + temp
+                s = s + '/'
+                temp = list(map(str, p.C[i].denominator.A))
+                temp = "".join(temp)
+                s = s + temp
+                if i < p.m - 1:
+                    s = s + 'x^' + str(p.m - i)
+                if i == p.m - 1:
+                    s = s + 'x'
+        return s
