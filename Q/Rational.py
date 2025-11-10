@@ -1,6 +1,15 @@
 from N.Natural import Natural
 from Z.Integer import Integer
-from TRANS.TRANS_N_Z import TRANS_N_Z
+#from TRANS.TRANS_N_Z import TRANS_N_Z
+
+def TRANS_N_Z(N):
+    """
+    Сделала: Имховик Наталья
+    Преобразование натурального в целое
+    Возвращает целое
+    """
+    # Формируем положительное целое с полями натурального
+    return Integer(0, N.len, N.A[:])
 
 
 class Rational:
