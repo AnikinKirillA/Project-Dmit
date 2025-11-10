@@ -60,7 +60,7 @@ class Rational:
         reduced = self.RED_Q_Q()
         return reduced.denominator.A == [1]
 
-    def ADD_QQ_Q(self, other):
+    def __add__(self, other):
         """
         Сделала: Имховик Наталья
         Выполняет сложение дробей
@@ -83,7 +83,7 @@ class Rational:
         # Создаем результирующую дробь
         return Rational(new_numerator, lcm).RED_Q_Q()
 
-    def SUB_QQ_Q(self, other):
+    def __sub__(self, other):
         """
         Сделала: Имховик Наталья
         Находит разность дробей

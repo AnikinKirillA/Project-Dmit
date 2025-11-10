@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-
+from parser import *
+from P.Polynomial import Polynomial
+from TRANS.TRANS_Q_P import TRANS_Q_P
 
 class Calculator:
     def __init__(self):
@@ -121,10 +123,14 @@ class Calculator:
 
     def process_expression(self, expr):
         """Обрабатывает выражение"""
-        # ЗДЕСЬ будет происходить передача строки с выражением
-        return 'answer'
+        ans = eval_rpn(to_rpn(expr))
+        if type(ans) != Polynomial:
+            ans = TRANS_Q_P(ans)
+        return ans.show()
 
     def run(self):
         """Запускает приложение"""
         self.window.mainloop()
 
+
+s = Calculator().run()

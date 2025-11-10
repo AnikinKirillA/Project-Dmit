@@ -1,6 +1,4 @@
 from N.Natural import Natural
-from TRANS.TRANS_N_Z import TRANS_N_Z
-from TRANS.TRANS_Z_N import TRANS_Z_N
 
 class Integer:
     def __init__(self, s, n, A):
